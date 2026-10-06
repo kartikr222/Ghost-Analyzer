@@ -251,15 +251,21 @@ function FieldInput({
 
 export function App() {
   const persisted = loadState();
-  const [inputs, setInputs] = useState<BusinessEvidenceInputs>(persisted?.inputs ?? EMPTY_BUSINESS_INPUTS);
-  const [isSample, setIsSample] = useState(persisted?.isSample ?? false);
-  const [hasAnalyzed, setHasAnalyzed] = useState(persisted?.hasAnalyzed ?? false);
-  const [view, setView] = useState<ViewId>(persisted?.hasAnalyzed ? 'verdict' : 'briefing');
+  const firstVisit = persisted === null;
+  const [inputs, setInputs] = useState<BusinessEvidenceInputs>(
+    persisted?.inputs ?? SAMPLE_BUSINESS_INPUTS
+  );
+  const [isSample, setIsSample] = useState(persisted?.isSample ?? true);
+  const [hasAnalyzed, setHasAnalyzed] = useState(persisted?.hasAnalyzed ?? true);
+  const [view, setView] = useState<ViewId>(
+    persisted?.hasAnalyzed || firstVisit ? 'verdict' : 'briefing'
+  );
   const [step, setStep] = useState(0);
   const [selectedGhost, setSelectedGhost] = useState<GhostDiagnosis['id'] | null>(null);
   const [openWhy, setOpenWhy] = useState<string | null>(null);
   const [controls, setControls] = useState<CounterfactualControls>(
-    persisted?.controls ?? defaultControlsFromInputs(persisted?.inputs ?? EMPTY_BUSINESS_INPUTS)
+    persisted?.controls ??
+      defaultControlsFromInputs(persisted?.inputs ?? SAMPLE_BUSINESS_INPUTS)
   );
 
   const analysis = useMemo(() => analyzeBusiness(inputs), [inputs]);
