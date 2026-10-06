@@ -251,7 +251,6 @@ function FieldInput({
 
 export function App() {
   const persisted = loadState();
-  const firstVisit = persisted === null;
   const [inputs, setInputs] = useState<BusinessEvidenceInputs>(
     persisted?.inputs ?? SAMPLE_BUSINESS_INPUTS
   );
