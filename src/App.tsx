@@ -258,7 +258,7 @@ export function App() {
   const [isSample, setIsSample] = useState(persisted?.isSample ?? true);
   const [hasAnalyzed, setHasAnalyzed] = useState(persisted?.hasAnalyzed ?? true);
   const [view, setView] = useState<ViewId>(
-    persisted?.hasAnalyzed || firstVisit ? 'verdict' : 'briefing'
+    persisted?.hasAnalyzed ? 'verdict' : 'briefing'
   );
   const [step, setStep] = useState(0);
   const [selectedGhost, setSelectedGhost] = useState<GhostDiagnosis['id'] | null>(null);
@@ -295,6 +295,8 @@ export function App() {
     setControls(defaultControlsFromInputs(SAMPLE_BUSINESS_INPUTS));
     setView('verdict');
     setSelectedGhost(null);
+    setOpenWhy(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function resetAll() {
@@ -307,12 +309,16 @@ export function App() {
     setSelectedGhost(null);
     setOpenWhy(null);
     clearState();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function runInvestigation() {
     setHasAnalyzed(true);
     setView('verdict');
     setControls(defaultControlsFromInputs(inputs));
+    setSelectedGhost(null);
+    setOpenWhy(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function go(id: ViewId) {
