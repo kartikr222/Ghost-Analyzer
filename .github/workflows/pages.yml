@@ -1,0 +1,42 @@
+name: Test and build Ghost Analyzer
+
+on:
+  push:
+    branches:
+      - main
+      - "arena/**"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run deterministic diagnostic unit tests
+        run: npm test
+
+      - name: Build production GitHub Pages bundle
+        run: npm run build
+
+      - name: Verify official Kartik Clarity brand logo assets and bundle
+        run: |
+          test -s index.html
+          test -s assets/kartik-clarity-logo-circle.jpeg
+          test -s assets/kartik-clarity-logo-rectangle.jpeg
+          test -s assets/ghost-analyzer.js
+          test -s assets/ghost-analyzer.css
+          test -s dist/index.html
+          grep -q 'ghost-analyzer.js' index.html
+          grep -q 'kartik-clarity-logo-circle.jpeg' index.html
