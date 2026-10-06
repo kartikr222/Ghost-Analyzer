@@ -1,7 +1,7 @@
 import type { BusinessEvidenceInputs, CounterfactualControls } from './engine/types';
 import { EMPTY_BUSINESS_INPUTS } from './engine/presets';
 
-const KEY = 'kartik-clarity.ghost-analyzer.v1';
+const KEY = 'kartik-clarity.ghost-analyzer.v2';
 
 export interface PersistedState {
   inputs: BusinessEvidenceInputs;
